@@ -1,17 +1,25 @@
 #include <assert.h>
 #include <stdio.h>
-#include <stdlib.h>
 
-//https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/
+// https://leetcode.com/problems/remove-duplicates-from-sorted-array/description/
 
 int removeDuplicates(int *nums, int numsSize) {
-  for (int i = 0; i < numsSize; i++) {
-    printf("Index=%d, Value=%d\n", i, nums[i]);
+  //for (int i = 0; i < numsSize; i++) {
+    //printf("Index=%d, Value=%d\n", i, nums[i]);
+//  }
+
+  //printf("\n");
+
+  int i = 0;
+  for (int j = i + 1; j < numsSize; j++) {
+
+    if (nums[i] != nums[j]) {
+      i++;
+      nums[i] = nums[j];
+    }
   }
 
-  printf("\n");
-
-  return 0;
+  return i + 1;
 }
 
 void example_1() {
@@ -45,9 +53,24 @@ void example_2() {
   }
 }
 
+void example_3() {
+  printf("Example 3\n");
+
+  int numsArray[] = {1, 1, 1, 2, 2, 3};
+  int numsLength = sizeof(numsArray) / sizeof(int);
+  int expectedNums[] = {1,2,3}; // The expected answer with correct length
+  int expectedNumsLength = 3;
+  int k = removeDuplicates(numsArray, numsLength); // Calls your implementation
+
+  assert(k == expectedNumsLength);
+  for (int i = 0; i < k; i++) {
+    assert(numsArray[i] == expectedNums[i]);
+  }
+}
+
 int main() {
   example_1();
   example_2();
-
+  example_3();
   return 0;
 }

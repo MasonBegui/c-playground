@@ -8,14 +8,11 @@
 char *toLowerCase(char *s) {
 
   int len = strlen(s);
-//   printf("%s is of len %d\n", s, len);
   for (int i = 0; i < len; i++) {
     s[i] = tolower(s[i]);
-    // printf("Before %c\n", s[i]);
     // if (s[i] >= 'A' && s[i] <= 'Z') {
     //   s[i] = s[i] + ('a' - 'A');
     // }
-    // printf("After %c\n", s[i]);
   }
   return s;
 }

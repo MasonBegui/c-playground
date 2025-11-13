@@ -4,27 +4,28 @@
 #include <string.h>
 
 int firstuniqchar(char *s) {
+  const int N = strlen(s);
   // printf("%s\n", s);
   // for (int i = 0; i < strlen(s); i++) {
   //   printf("%c\n", s[i]);
   // }
- if(strlen(s) == 1 ){
-  return 0;
- }
-  for (int i = 0; i < strlen(s); i++) {
-    for (int j = 0; j < strlen(s); j++) {
+  if (N == 1) {
+    return 0;
+  }
+  for (int i = 0; i < N; i++) {
+    for (int j = 0; j < N; j++) {
       if (i != j) {
         if (s[i] == s[j]) {
           // we know that this is not unique
           break;
         } else {
           // they are not the same.. so far it could be unique
-          if (j + 1== strlen(s)) {
+          if (j + 1 == N) {
             return i;
           }
         }
-      }else{
-        if(i == j && j + 1== strlen(s)){
+      } else {
+        if (i == j && j + 1 == N) {
           return i;
         }
       }
@@ -54,22 +55,17 @@ void example_3() {
   assert(-1 == result);
 }
 
-
 void example_4() {
   char *s = "z";
   int result = firstuniqchar(s);
   assert(0 == result);
 }
 
-
 void example_5() {
   char *s = "dddccdbba";
   int result = firstuniqchar(s);
   assert(8 == result);
 }
-
-
-
 
 int main() {
 

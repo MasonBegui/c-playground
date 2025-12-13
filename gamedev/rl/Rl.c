@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <math.h>
 
+
+
+
 // --- 1. Vector Structure (for position, velocity, acceleration) ---
 typedef struct {
     double x;
@@ -19,6 +22,8 @@ typedef struct {
 // Global constant for gravity (9.81 m/s^2, applied downwards)
 // Assuming Z is the vertical axis in our simple world
 const Vector3 GRAVITY_ACCEL = { .x = 0.0, .y = 0.0, .z = -9.81 }; 
+
+
 
 // --- 3. Core Physics Update Function ---
 // This is the function that runs every frame of the game loop

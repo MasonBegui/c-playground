@@ -3,15 +3,44 @@
 #include <stdio.h>
 #include <string.h>
 
-int firstuniqchar(char *s){
+int firstuniqchar(char *s) {
   const int N = strlen(s);
-   if (N == 1) {
+  if (N == 1) {
     // 'a' is unique
     // 'b' is unique
     // etc
     return 0;
   }
-for ( int i = 0; i < N; i++) {
+  int counts[26] = {0};
+  for (int i = 0; i < N; i++) {
+    printf("%c ", s[i]);
+    int index = s[i] - 'a';
+    counts[index]++;
+  }
+   for (int i = 0; i < N; i++){
+    int indexCount = s[i] - 'a';
+    if (counts[indexCount] == 1){
+        return i;
+    }
+   }
+
+  printf("\n");
+  for (int i = 0; i < 26; i++) {
+    printf("%d ", counts[i]);
+  }
+  printf("\n");
+  fflush(stdout);
+  return -1;
+}
+int firstuniqchar_v2(char *s) {
+  const int N = strlen(s);
+  if (N == 1) {
+    // 'a' is unique
+    // 'b' is unique
+    // etc
+    return 0;
+  }
+  for (int i = 0; i < N; i++) {
     int is_unique = 1;
     for (int j = 0; j < N; j++) {
       if (i != j && s[i] == s[j]) {
@@ -23,45 +52,32 @@ for ( int i = 0; i < N; i++) {
       return i;
     }
   }
- return -1;
+  return -1;
 }
 
-
-int firstuniqchar_v1(char *s)
-{
+int firstuniqchar_v1(char *s) {
   const int N = strlen(s);
   // printf("%s\n", s);
   // for (int i = 0; i < strlen(s); i++) {
   //   printf("%c\n", s[i]);
   // }
-  if (N == 1)
-  {
+  if (N == 1) {
     return 0;
   }
-  for (int i = 0; i < N; i++)
-  {
-    for (int j = 0; j < N; j++)
-    {
-      if (i != j)
-      {
-        if (s[i] == s[j])
-        {
+  for (int i = 0; i < N; i++) {
+    for (int j = 0; j < N; j++) {
+      if (i != j) {
+        if (s[i] == s[j]) {
           // we know that this is not unique
           break;
-        }
-        else
-        {
+        } else {
           // they are not the same.. so far it could be unique
-          if (j + 1 == N)
-          {
+          if (j + 1 == N) {
             return i;
           }
         }
-      }
-      else
-      {
-        if (i == j && j + 1 == N)
-        {
+      } else {
+        if (i == j && j + 1 == N) {
           return i;
         }
       }
@@ -71,8 +87,7 @@ int firstuniqchar_v1(char *s)
   return -1;
 }
 
-void example_1()
-{
+void example_1() {
   // 0 1 2 3 4 5 6 7
   // l e e t c o d e
   char *ss = "leetcode";
@@ -80,42 +95,44 @@ void example_1()
   assert(0 == result);
 }
 
-void example_2()
-{
+void example_2() {
   char *s = "loveleetcode";
   int result = firstuniqchar(s);
   assert(2 == result);
 }
 
-void example_3()
-{
+void example_3() {
   char *s = "aabb";
   int result = firstuniqchar(s);
   assert(-1 == result);
 }
 
-void example_4()
-{
+void example_4() {
   char *s = "z";
   int result = firstuniqchar(s);
   assert(0 == result);
 }
 
-void example_5()
-{
+void example_5() {
   char *s = "dddccdbba";
   int result = firstuniqchar(s);
   assert(8 == result);
 }
 
-int main()
-{
+void example_6() {
+  char *s = "aabb";
+  int result = firstuniqchar(s);
+  assert(-1 == result);
+}
+
+int main() {
 
   example_1();
   example_2();
   example_3();
   example_4();
   example_5();
+  example_6();
 
   return 0;
 }

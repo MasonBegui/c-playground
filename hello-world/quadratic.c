@@ -1,3 +1,6 @@
+// How to run 
+// gcc -Wall quadratic.c -lm && ./a.out
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>

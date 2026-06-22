@@ -10,6 +10,7 @@ int main() {
   printf("   |   |   \n");
 
   GameState game;
-  init(game);
+  init(&game);
+  print_board(game.board);
   return EXIT_SUCCESS;
 }

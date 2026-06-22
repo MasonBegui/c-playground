@@ -21,7 +21,6 @@ int main(int argc, const char *argv[]){
 
         ClearBackground(RAYWHITE);
         DrawText("Hello, Raylib 6!", 190, 200, 40, LIGHTGRAY);
-
         EndDrawing();
     }
 

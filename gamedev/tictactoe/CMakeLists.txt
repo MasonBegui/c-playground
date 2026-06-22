@@ -12,7 +12,13 @@ FetchContent_Declare(
     URL https://github.com/raysan5/raylib/archive/refs/tags/${RAYLIB_VERSION}.tar.gz
     FIND_PACKAGE_ARGS ${RAYLIB_VERSION} EXACT
 )
+
+# --- FORCE WAYLAND BUILD OPTIONS HERE ---
 set(BUILD_EXAMPLES OFF CACHE INTERNAL "")
+#set(USE_WAYLAND ON CACHE BOOL "Force Raylib to use Wayland" FORCE)
+# ----------------------------------------
+
+
 FetchContent_MakeAvailable(raylib)
 
 #name_of_the_binary source_code 

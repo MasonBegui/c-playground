@@ -15,12 +15,14 @@ typedef struct {
 typedef struct {
     Player p1;
     Player p2;
+    int running;
     char board [BOARD_SIZE][BOARD_SIZE];
 
 }GameState;
 
-int init(GameState *);
-void print_board (char board[BOARD_SIZE][BOARD_SIZE]);
+int init_game(GameState *);
+int is_running_game(GameState *);
+void print_game (char board[BOARD_SIZE][BOARD_SIZE]);
 
 
 #endif

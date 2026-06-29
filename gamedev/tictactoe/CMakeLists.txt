@@ -4,7 +4,15 @@ set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 include(FetchContent)
+
+# raylib's CMakeLists.txt uses project() without LANGUAGES, which
+# defaults to C+CXX. Work around the lack of g++.
+set(CMAKE_CXX_COMPILER ${CMAKE_C_COMPILER} CACHE FILEPATH "CXX compiler" FORCE)
+set(CMAKE_CXX_COMPILER_WORKS TRUE CACHE INTERNAL "")
+set(CMAKE_CXX_COMPILER_FORCED TRUE CACHE INTERNAL "")
 
 set(RAYLIB_VERSION 6.0)
 FetchContent_Declare(
@@ -15,7 +23,9 @@ FetchContent_Declare(
 
 # --- FORCE WAYLAND BUILD OPTIONS HERE ---
 set(BUILD_EXAMPLES OFF CACHE INTERNAL "")
-#set(USE_WAYLAND ON CACHE BOOL "Force Raylib to use Wayland" FORCE)
+set(USE_WAYLAND ON CACHE BOOL "Force Raylib to use Wayland" FORCE)
+set(GLFW_BUILD_X11 OFF CACHE BOOL "Disable X11 support in GLFW" FORCE)
+set(GLFW_BUILD_WAYLAND ON CACHE BOOL "Enable Wayland support in GLFW" FORCE)
 # ----------------------------------------
 
 

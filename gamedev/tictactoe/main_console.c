@@ -5,12 +5,21 @@
 
 int main() {
   printf("I am the console\n");
-  printf("___|___|___\n");
-  printf("___|___|___\n");
-  printf("   |   |   \n");
 
   GameState game;
-  init(&game);
-  print_board(game.board);
+  init_game(&game);
+
+  while(is_running_game(&game)) {
+    print_game(game.board);
+
+    
+
+
+
+
+  }
+
+
+
   return EXIT_SUCCESS;
 }

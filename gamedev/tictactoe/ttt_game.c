@@ -19,11 +19,19 @@ int init_game(GameState * mygamestate) {
     printf("Init Game\n");
 
     mygamestate->running = 1;
-     mygamestate->p1.sym = SYM_X;
-    mygamestate->p1.score = 0;
 
+    // set the players info
+    mygamestate->p1.id = 1;
+    mygamestate->p1.sym = SYM_X;
+    mygamestate->p1.wins = 0;
+
+    mygamestate->p2.id = 2;
     mygamestate->p2.sym = SYM_O;
-    mygamestate->p2.score = 0;
+    mygamestate->p2.wins = 0;
+
+    // in the first game, we always let player one go first
+    mygamestate->currentPlayer = mygamestate->p1.id;
+
 
     int count = 0;
     for(int i = 0 ; i < BOARD_SIZE ; i++){
@@ -34,3 +42,10 @@ int init_game(GameState * mygamestate) {
     
     return 0;
 }
+
+Point get_board_point(int index){
+    printf("We need to find the row,col of index %d", index);
+
+    // return Point{.row = 0, .col = 0};
+}
+// void get_board_point(int index, int *row, int *col);

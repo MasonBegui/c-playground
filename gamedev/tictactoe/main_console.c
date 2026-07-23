@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -9,7 +10,10 @@ int get_player_input(Player *currentPlayer) {
   do {
     printf("Hello player %d, it's your turn\nPlease pick an avaible slot: ",
            currentPlayer->id);
-    scanf("%d", &choice);
+
+    char cchoice; // character choice
+    scanf("%c", &cchoice);
+    choice = cchoice - '0';
 
     choiceCond = choice < 1 || choice > 9;
     if (choiceCond) {
@@ -21,7 +25,6 @@ int get_player_input(Player *currentPlayer) {
 }
 
 int main() {
-  printf("I am the console\n");
 
   GameState game;
   init_game(&game);
@@ -36,12 +39,48 @@ int main() {
       currentPlayer = &game.p2;
     }
 
-    int choiceIndex = get_player_input(currentPlayer);
+    // this captures user input on where they want to place their symbol
 
-    get_board_point(choiceIndex);
+  get_valid_coord: {
+    const int choiceIndex = get_player_input(currentPlayer);
+    int row;
+    int col;
+    to_coordinates(choiceIndex, &row, &col);
+    if (game.board[row][col] != SYM_O && game.board[row][col] != SYM_X) {
+      game.board[row][col] = currentPlayer->sym;
+    } else {
+      // we need the user to select a correct choiceIndex
+      // gotos are kinda bad but this works
+      printf("This is not a valid option\n");
+      print_game(game.board);
+      goto get_valid_coord;
+    }
+  }
+    // TODO: we need to now check if there is three in a row. We only need to
+    // check the currrent player symbol.
 
-    // TODO: given the choiceIndex, how do we map it to our 2d board array
-    // TODO: we need to determine if the slot is taken
+    // row case
+    for (int row = 0; row < BOARD_SIZE; row++) {
+      const int a = game.board[row][0];
+      const int b = game.board[row][1];
+      const int c = game.board[row][2];
+
+      if (a == b && b == c) {
+        printf("Player %d is the winner\n", currentPlayer->id);
+        currentPlayer->wins++;
+        assert(0);
+      }
+    } // end of row case
+
+    // TODO: col case
+    for (int col = 0; col < BOARD_SIZE; col++) {
+      //   printf("(%d,%d)= %c\n", 0 , col ,game.board[0][col]);
+    } // end of col case
+
+    // TODO: diag. case
+
+    //TODO: is draw?
+
 
     // lets swtich players
     if (game.currentPlayer == 1) {

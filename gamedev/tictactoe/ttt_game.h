@@ -13,12 +13,6 @@ typedef struct {
     int wins;
 }Player;
 
-
-typedef struct {
-    int row;
-    int col;
-} Point;
-
 typedef struct {
     Player p1;
     Player p2;
@@ -32,8 +26,6 @@ int init_game(GameState *);
 int is_running_game(GameState *);
 void print_game (char board[BOARD_SIZE][BOARD_SIZE]);
 
-Point get_board_point(int index);
-// void get_board_point(int index, int *row, int *col);
-
+int to_coordinates(int index, int *rowindex, int *colindex);
 
 #endif

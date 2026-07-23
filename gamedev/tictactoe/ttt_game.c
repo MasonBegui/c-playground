@@ -43,9 +43,12 @@ int init_game(GameState * mygamestate) {
     return 0;
 }
 
-Point get_board_point(int index){
-    printf("We need to find the row,col of index %d", index);
-
-    // return Point{.row = 0, .col = 0};
+int to_coordinates(int index, int *rowindex, int *colindex){
+  if (index < 1 || index > 9){
+    return -1;
+  }
+  int baseindex = index - 1;
+  *rowindex = baseindex / BOARD_SIZE;
+  *colindex = baseindex % BOARD_SIZE;
+  return 0;
 }
-// void get_board_point(int index, int *row, int *col);

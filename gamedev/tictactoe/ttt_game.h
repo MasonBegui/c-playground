@@ -28,4 +28,8 @@ void print_game (char board[BOARD_SIZE][BOARD_SIZE]);
 
 int to_coordinates(int index, int *rowindex, int *colindex);
 
+int check_win(char board[BOARD_SIZE][BOARD_SIZE], char symbol);
+
+
+
 #endif

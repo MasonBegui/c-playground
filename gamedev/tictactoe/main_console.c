@@ -56,31 +56,12 @@ int main() {
       goto get_valid_coord;
     }
   }
-    // TODO: we need to now check if there is three in a row. We only need to
-    // check the currrent player symbol.
-
-    // row case
-    for (int row = 0; row < BOARD_SIZE; row++) {
-      const int a = game.board[row][0];
-      const int b = game.board[row][1];
-      const int c = game.board[row][2];
-
-      if (a == b && b == c) {
-        printf("Player %d is the winner\n", currentPlayer->id);
-        currentPlayer->wins++;
-        assert(0);
-      }
-    } // end of row case
-
-    // TODO: col case
-    for (int col = 0; col < BOARD_SIZE; col++) {
-      //   printf("(%d,%d)= %c\n", 0 , col ,game.board[0][col]);
-    } // end of col case
-
-    // TODO: diag. case
-
-    //TODO: is draw?
-
+    int did_we_win = check_win(game.board , currentPlayer->sym);
+    if(did_we_win != 0){
+      printf("Player %d is the winner\n", currentPlayer->id);
+      assert(0);
+    }  
+    // TODO: is draw?
 
     // lets swtich players
     if (game.currentPlayer == 1) {

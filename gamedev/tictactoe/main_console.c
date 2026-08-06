@@ -1,8 +1,19 @@
-#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "ttt_game.h"
+
+int get_yes_no(void) {
+  int answer;
+  int scanfRtn;
+  do {
+    printf("Do you want to play again? (1 = yes, 0 = no): ");
+    scanfRtn = scanf("%d", &answer);
+    while (getchar() != '\n')
+      ; // clears the input buffer
+  } while (scanfRtn != 1 || (answer != 0 && answer != 1));
+  return answer;
+}
 
 int get_player_input(Player *currentPlayer) {
   int choice;
@@ -10,12 +21,10 @@ int get_player_input(Player *currentPlayer) {
   do {
     printf("Hello player %d, it's your turn\nPlease pick an avaible slot: ",
            currentPlayer->id);
-
-    char cchoice; // character choice
-    scanf("%c", &cchoice);
-    choice = cchoice - '0';
-
-    choiceCond = choice < 1 || choice > 9;
+    int scanfRtn = scanf("%d", &choice);
+    while (getchar() != '\n')
+      ; // clears the input buffer
+    choiceCond = choice < 1 || choice > 9 || scanfRtn == 0;
     if (choiceCond) {
       printf("This is not a valid slot. Please try again.\n");
     }
@@ -29,7 +38,8 @@ int main() {
   GameState game;
   init_game(&game);
 
-  while (is_running_game(&game)) {
+  int playing = 1;
+  while (playing) {
     print_game(game.board);
 
     Player *currentPlayer = NULL;
@@ -39,37 +49,36 @@ int main() {
       currentPlayer = &game.p2;
     }
 
-    // this captures user input on where they want to place their symbol
+    int choiceIndex;
+    do {
+      choiceIndex = get_player_input(currentPlayer);
+      if (!is_valid_move(&game, choiceIndex)) {
+        printf("This is not a valid option\n");
+        print_game(game.board);
+      }
+    } while (!is_valid_move(&game, choiceIndex));
 
-  get_valid_coord: {
-    const int choiceIndex = get_player_input(currentPlayer);
-    int row;
-    int col;
-    to_coordinates(choiceIndex, &row, &col);
-    if (game.board[row][col] != SYM_O && game.board[row][col] != SYM_X) {
-      game.board[row][col] = currentPlayer->sym;
-    } else {
-      // we need the user to select a correct choiceIndex
-      // gotos are kinda bad but this works
-      printf("This is not a valid option\n");
-      print_game(game.board);
-      goto get_valid_coord;
-    }
-  }
-    int did_we_win = check_win(game.board , currentPlayer->sym);
-    if(did_we_win != 0){
+    int result = make_move(&game, choiceIndex);
+    if (result == MOVE_WIN) {
       printf("Player %d is the winner\n", currentPlayer->id);
-      assert(0);
-    }  
-    // TODO: is draw?
-
-    // lets swtich players
-    if (game.currentPlayer == 1) {
-      game.currentPlayer = 2;
-    } else {
-      game.currentPlayer = 1;
+      playing = get_yes_no();
+      if (!playing) {
+        break;
+      }
+      reset_board(&game);
+    } else if (result == MOVE_DRAW) {
+      printf("It's a draw!\n");
+      playing = get_yes_no();
+      if (!playing) {
+        break;
+      }
+      reset_board(&game);
     }
   }
+
+  printf("\nGame stats:\n");
+  printf("Player 1 (X): %d win(s)\n", game.p1.wins);
+  printf("Player 2 (O): %d win(s)\n", game.p2.wins);
 
   return EXIT_SUCCESS;
 }

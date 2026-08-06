@@ -44,6 +44,16 @@ int init_game(GameState *mygamestate) {
   return 0;
 }
 
+int reset_board(GameState *mygamestate) {
+  int count = 0;
+  for (int i = 0; i < BOARD_SIZE; i++) {
+    for (int j = 0; j < BOARD_SIZE; j++) {
+      mygamestate->board[i][j] = '0' + (++count);
+    }
+  }
+  return 0;
+}
+
 int to_coordinates(int index, int *rowindex, int *colindex) {
   if (index < 1 || index > 9) {
     return -1;
@@ -79,4 +89,54 @@ int check_win(char board[BOARD_SIZE][BOARD_SIZE], char symbol) {
   }
 
   return 0;
+}
+
+int check_draw(char board[BOARD_SIZE][BOARD_SIZE]) {
+  for (int i = 0; i < BOARD_SIZE; i++) {
+    for (int j = 0; j < BOARD_SIZE; j++) {
+      if (board[i][j] != SYM_X && board[i][j] != SYM_O) {
+        return 0;
+      }
+    }
+  }
+  return 1;
+}
+
+int is_valid_move(GameState *g, int index) {
+  if (index < 1 || index > 9) {
+    return 0;
+  }
+  int row, col;
+  to_coordinates(index, &row, &col);
+  return g->board[row][col] != SYM_X && g->board[row][col] != SYM_O;
+}
+
+// Returns MOVE_WIN if the move ended the game, MOVE_DRAW for a tie,
+// MOVE_OK if the game continues, and MOVE_INVALID if the move was rejected.
+int make_move(GameState *g, int index) {
+  if (!is_valid_move(g, index)) {
+    return MOVE_INVALID;
+  }
+
+  Player *current = NULL;
+  if (g->currentPlayer == 1) {
+    current = &g->p1;
+  } else {
+    current = &g->p2;
+  }
+
+  int row, col;
+  to_coordinates(index, &row, &col);
+  g->board[row][col] = current->sym;
+
+  int result = MOVE_OK;
+  if (check_win(g->board, current->sym)) {
+    current->wins++;
+    result = MOVE_WIN;
+  } else if (check_draw(g->board)) {
+    result = MOVE_DRAW;
+  }
+
+  g->currentPlayer = current->id == 1 ? 2 : 1;
+  return result;
 }

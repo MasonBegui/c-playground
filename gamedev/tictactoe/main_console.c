@@ -60,6 +60,7 @@ int main() {
 
     int result = make_move(&game, choiceIndex);
     if (result == MOVE_WIN) {
+      print_game(game.board);
       printf("Player %d is the winner\n", currentPlayer->id);
       playing = get_yes_no();
       if (!playing) {
@@ -67,6 +68,7 @@ int main() {
       }
       reset_board(&game);
     } else if (result == MOVE_DRAW) {
+      print_game(game.board);
       printf("It's a draw!\n");
       playing = get_yes_no();
       if (!playing) {
